@@ -6,7 +6,7 @@ using std::cout;
 using std::endl;
 
 Person::Person(const char *name_, Person* father_, Person* mother_){
-    name = new char[strlen(name_)];
+    name = new char[strlen(name_)+1];//Added 1 to account for null char i think?
     strcpy(name, name_);
     father = father_;
     mother = mother_;
@@ -16,7 +16,9 @@ Person::Person(const char *name_, Person* father_, Person* mother_){
 }
 
 Person::~Person(){
-    delete children;
+    delete[] children;
+    
+    delete[] name;
 }
 
 void Person::addChild(Person *newChild){
@@ -67,6 +69,7 @@ char* Person::compute_relation(int level){
         char *temp2 = new char[strlen("great ") + strlen(temp) + 1];
         strcat(strcpy(temp2, "great "), temp);
         temp = temp2;
+	//delete[] temp2; //deletes temp2 array after its been used, bunch of errors again
     }
     return temp;
 }
@@ -79,4 +82,5 @@ void expand(Person ***t, int *MAX){
   memcpy(temp, *t, *MAX * sizeof(**t));
   *MAX *= 2;
   *t = temp;
+  //delete[] temp;//delete the temp array, doing this causes a bunch of errors?
 }
