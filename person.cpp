@@ -69,8 +69,10 @@ char* Person::compute_relation(int level){
     for(int i = 2; i <= level; i++){
         char *temp2 = new char[strlen("great ") + strlen(temp) + 1];
         strcat(strcpy(temp2, "great "), temp);
+
+        delete[] temp; // need to deallocate this memory so that temp can be rewritten in next line
+
         temp = temp2;
-	//delete[] temp2; //deletes temp2 array after its been used, bunch of errors again
     }
     return temp;
 }
@@ -81,7 +83,9 @@ char* Person::compute_relation(int level){
 void expand(Person ***t, int *MAX){
   Person **temp = new Person*[2 * *MAX];
   memcpy(temp, *t, *MAX * sizeof(**t));
+
+  delete[]* t; //need to delete old array of pointers, before assigning one with new size. I think.
+
   *MAX *= 2;
   *t = temp;
-  //delete[] temp;//delete the temp array, doing this causes a bunch of errors?
 }
